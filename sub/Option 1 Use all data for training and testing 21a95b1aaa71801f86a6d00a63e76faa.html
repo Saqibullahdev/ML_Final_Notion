@@ -1,0 +1,690 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Option 1: Use all data for training and testing</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21a95b1a-aa71-801f-86a6-d00a63e76faa" class="page sans"><header><h1 class="page-title"><strong>Option 1: Use all data for training and testing</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="21a95b1a-aa71-80b2-a5ab-ca60574ad08c" class="">Let&#x27;s break this question down <strong>step by step</strong>, starting with the explanation of key terms:</p><hr id="21a95b1a-aa71-8047-9212-c7ba354e6f1e"/><h3 id="21a95b1a-aa71-8060-8251-fba90ec4cfd1" class="">🔹 Key Terms Explained</h3><h3 id="21a95b1a-aa71-80dc-a527-deff4ec1d212" class="">1. <strong>Training and Test Data</strong></h3><ul id="21a95b1a-aa71-8014-89c7-c7707b304d45" class="bulleted-list"><li style="list-style-type:disc"><strong>Training data</strong>: The portion of the dataset used to teach the model how to make predictions.</li></ul><ul id="21a95b1a-aa71-8029-a566-e745694903fb" class="bulleted-list"><li style="list-style-type:disc"><strong>Test data</strong>: A separate portion used to evaluate how well the model performs on unseen data.</li></ul><hr id="21a95b1a-aa71-802b-9786-ed3c16e6de21"/><h3 id="21a95b1a-aa71-8057-a9fc-dc5b222f7fd5" class="">2. <strong>Overfitting</strong></h3><ul id="21a95b1a-aa71-8070-b664-f1e8a97fab5d" class="bulleted-list"><li style="list-style-type:disc">When a model learns the training data <strong>too well</strong>, including noise or random fluctuations.</li></ul><ul id="21a95b1a-aa71-80e6-972e-d277eede567a" class="bulleted-list"><li style="list-style-type:disc">It performs well on training data but poorly on unseen data (test data).</li></ul><hr id="21a95b1a-aa71-802f-b90a-e04c32bd1c58"/><h3 id="21a95b1a-aa71-8017-83b6-e7f3d1c5e659" class="">3. <strong>K-fold Cross-Validation</strong></h3><ul id="21a95b1a-aa71-80b5-8176-c9abc472e4c8" class="bulleted-list"><li style="list-style-type:disc">A technique to assess model performance by dividing data into <code>k</code> subsets (folds).</li></ul><ul id="21a95b1a-aa71-80ff-bb5d-e6b8217f27ad" class="bulleted-list"><li style="list-style-type:disc">The model is trained on <code>k-1</code> folds and tested on the remaining fold.</li></ul><ul id="21a95b1a-aa71-808f-bf1d-fe66ec50e7a9" class="bulleted-list"><li style="list-style-type:disc">This process is repeated <code>k</code> times, and the average performance is taken.</li></ul><ul id="21a95b1a-aa71-807d-875d-d728705ff834" class="bulleted-list"><li style="list-style-type:disc">Helps in <strong>reducing variance</strong> and gives a more <strong>reliable estimate</strong> of model performance.</li></ul><hr id="21a95b1a-aa71-805e-815d-fd6c76290f33"/><h3 id="21a95b1a-aa71-808f-ba61-fa026ca3036d" class="">✅ Now, Let&#x27;s Evaluate the Given Options</h3><h3 id="21a95b1a-aa71-805f-bb6e-fd241d07510c" class=""><strong>Option 1: Use all data for training and testing</strong></h3><ul id="21a95b1a-aa71-80cb-9033-c2283c88dd24" class="bulleted-list"><li style="list-style-type:disc">❌ <strong>Not suitable</strong>.</li></ul><ul id="21a95b1a-aa71-8050-92e0-c62625f4696d" class="bulleted-list"><li style="list-style-type:disc">You’ll get a very <strong>optimistic accuracy</strong>.</li></ul><ul id="21a95b1a-aa71-80f9-aa41-d38aa5228799" class="bulleted-list"><li style="list-style-type:disc">It <strong>doesn’t tell you how well the model performs on new, unseen emails</strong> (overfitting risk).</li></ul><hr id="21a95b1a-aa71-80a2-9ab9-c53d20c0628e"/><h3 id="21a95b1a-aa71-8066-b5e7-cde77bc25d2a" class=""><strong>Option 2: Split into training and test sets</strong></h3><ul id="21a95b1a-aa71-80cb-b988-e9cea45f4565" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Better than Option 1</strong>.</li></ul><ul id="21a95b1a-aa71-805a-99b1-eb9fdf5e75f9" class="bulleted-list"><li style="list-style-type:disc">Common practice (e.g., 80% training, 20% test).</li></ul><ul id="21a95b1a-aa71-8095-b0f4-c40055f867d1" class="bulleted-list"><li style="list-style-type:disc">But performance may vary depending on <strong>how you split</strong> the data.</li></ul><ul id="21a95b1a-aa71-80f0-8a34-d087fa0d9e10" class="bulleted-list"><li style="list-style-type:disc">Accuracy might not be stable or reliable on small datasets.</li></ul><hr id="21a95b1a-aa71-80b6-a8a6-ee7de030708d"/><h3 id="21a95b1a-aa71-8049-9688-fa26ad2e548e" class=""><strong>Option 3: Use K-fold cross-validation</strong></h3><ul id="21a95b1a-aa71-80ed-a5af-e179f07c8026" class="bulleted-list"><li style="list-style-type:disc">✅✅ <strong>Best Option</strong> (most suitable).</li></ul><ul id="21a95b1a-aa71-8079-b06f-fbb26d4663f3" class="bulleted-list"><li style="list-style-type:disc">It ensures the model is trained and tested on <strong>all parts of the dataset</strong>, just at different times.</li></ul><ul id="21a95b1a-aa71-806f-a355-ca050b2cbb6e" class="bulleted-list"><li style="list-style-type:disc">Especially helpful for <strong>small datasets like 1000 emails</strong>.</li></ul><ul id="21a95b1a-aa71-802c-afa3-e4939eeeeef8" class="bulleted-list"><li style="list-style-type:disc">Reduces the risk of bias from a single train-test split.</li></ul><ul id="21a95b1a-aa71-80d5-a522-d0c0ec504142" class="bulleted-list"><li style="list-style-type:disc"><strong>More stable and reliable performance estimation</strong>.</li></ul><hr id="21a95b1a-aa71-8066-bde0-ee26bd4378dd"/><h3 id="21a95b1a-aa71-807e-86d8-c4b335c9c157" class="">📌 Final Answer:</h3><p id="21a95b1a-aa71-8075-a467-c048a2197ebb" class=""><strong>Option 3: Use k-fold cross-validation</strong> is the most suitable method.</p><hr id="21a95b1a-aa71-80d5-9f3b-d673585dcc31"/><h3 id="21a95b1a-aa71-80b3-8b5f-cd3f458f812c" class="">✅ Reason:</h3><p id="21a95b1a-aa71-80e2-8e6e-e8d01c59adff" class="">Because it provides a <strong>more reliable and unbiased evaluation</strong> of your classifier by testing the model on different subsets of the data and averaging the results. This is especially important for <strong>small datasets</strong>, where using only one test set might not reflect true model performance.</p><hr id="21a95b1a-aa71-80b7-8e99-f1f85959b92d"/><p id="21a95b1a-aa71-8014-afd4-eea94ffa7ce3" class="">Let me know if you want a sample diagram or code example of k-fold cross-validation!</p><p id="21a95b1a-aa71-8020-9bcf-e52716030d11" class="">
+</p><h3 id="21a95b1a-aa71-8019-81d7-e4fb6c190c2a" class=""><strong>Question 02: Regularization and Model Evaluation</strong></h3><p id="21a95b1a-aa71-8084-9eca-d5cd2222df84" class=""><strong>[10 Marks]</strong></p><p id="21a95b1a-aa71-8087-98f4-e462c096b50c" class="">You are working on a <strong>movie review sentiment classifier</strong> using machine learning. You have a dataset of <strong>5,000 reviews</strong>, each labeled as either <strong>positive</strong> or <strong>negative</strong>. Each review is represented using features such as <strong>term frequency</strong>, <strong>presence of sentiment keywords</strong>, and <strong>review length</strong>.</p><p id="21a95b1a-aa71-8042-bb4e-f5ac61da657e" class="">You want to <strong>accurately evaluate</strong> your model&#x27;s performance before deploying it.</p><p id="21a95b1a-aa71-8039-a48d-d2ef4becdced" class="">Which of the following approaches would provide the most <strong>reliable performance estimate</strong> and why?</p><ol type="1" id="21a95b1a-aa71-80b2-862b-f6132e16a290" class="numbered-list" start="1"><li>Use all 5,000 reviews to both train and test the model.</li></ol><ol type="1" id="21a95b1a-aa71-80d2-ac13-f19ae8b728b6" class="numbered-list" start="2"><li>Randomly split the dataset into 70% training and 30% testing.</li></ol><ol type="1" id="21a95b1a-aa71-8098-a563-d739d2e6e647" class="numbered-list" start="3"><li>Use 10-fold cross-validation to evaluate the model.</li></ol><hr id="21a95b1a-aa71-8025-9351-f99eb3475910"/><h3 id="21a95b1a-aa71-8098-b6f4-f46bebf27671" class="">🔹 Your Task:</h3><ul id="21a95b1a-aa71-805d-b53f-ddd4290e1df6" class="bulleted-list"><li style="list-style-type:disc">Explain which method is <strong>most appropriate</strong>.</li></ul><ul id="21a95b1a-aa71-80b7-9536-c2f254c8e367" class="bulleted-list"><li style="list-style-type:disc">Justify your answer based on reliability, generalization, and dataset size.</li></ul><h3 id="21a95b1a-aa71-803c-b168-cce085b29540" class=""><strong>Option 1: Use all 5,000 reviews for both training and testing</strong></h3><ul id="21a95b1a-aa71-80dd-a394-e2671e824b72" class="bulleted-list"><li style="list-style-type:disc">❌ <strong>Incorrect.</strong></li></ul><ul id="21a95b1a-aa71-80f6-b201-c7dd73c1373a" class="bulleted-list"><li style="list-style-type:disc">This leads to <strong>overfitting</strong> — the model performs well on training data but poorly on new, unseen reviews.</li></ul><ul id="21a95b1a-aa71-8003-bfe1-c090b263cf88" class="bulleted-list"><li style="list-style-type:disc">No real evaluation of generalization.</li></ul><hr id="21a95b1a-aa71-803a-af6e-dc59106bcaa5"/><h3 id="21a95b1a-aa71-8060-a3fb-c685a9db23c4" class=""><strong>Option 2: 70/30 train-test split</strong></h3><ul id="21a95b1a-aa71-80e7-9f83-fed3e417b4d2" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Better.</strong></li></ul><ul id="21a95b1a-aa71-8057-b397-d591ddd7d404" class="bulleted-list"><li style="list-style-type:disc">You separate data for training and evaluation.</li></ul><ul id="21a95b1a-aa71-80f7-a83b-cde47f9d5281" class="bulleted-list"><li style="list-style-type:disc">But the result depends heavily on <strong>how the data was split</strong>.</li></ul><ul id="21a95b1a-aa71-80eb-8090-d1eeff4a577d" class="bulleted-list"><li style="list-style-type:disc">You might get a biased estimate if your 30% test data isn&#x27;t representative.</li></ul><hr id="21a95b1a-aa71-8018-be5a-c07b502bbc89"/><h3 id="21a95b1a-aa71-80b5-962c-fcf5e4e6fa77" class=""><strong>Option 3: 10-Fold Cross-Validation</strong></h3><ul id="21a95b1a-aa71-80b3-a098-ff53044e2f27" class="bulleted-list"><li style="list-style-type:disc">✅✅ <strong>Best choice.</strong></li></ul><ul id="21a95b1a-aa71-8001-bd08-d12563418cec" class="bulleted-list"><li style="list-style-type:disc">Divides the dataset into 10 equal parts (folds).</li></ul><ul id="21a95b1a-aa71-8065-a8d8-d9bae362d168" class="bulleted-list"><li style="list-style-type:disc">Trains the model 10 times, each time with 9 folds as training and 1 as testing.</li></ul><ul id="21a95b1a-aa71-8058-9d61-e4b48c6f1639" class="bulleted-list"><li style="list-style-type:disc">You get an <strong>average accuracy</strong>, which is <strong>more stable and reliable</strong>.</li></ul><ul id="21a95b1a-aa71-80df-be1c-c3cc3f0e3b1b" class="bulleted-list"><li style="list-style-type:disc">Especially good for <strong>moderate datasets</strong> like 5,000 reviews.</li></ul><hr id="21a95b1a-aa71-808e-89bd-c6ede0c67edb"/><h3 id="21a95b1a-aa71-806d-a910-e445633a8ed7" class="">📌 <strong>Final Answer</strong>:</h3><p id="21a95b1a-aa71-800c-909f-d793dc9ad538" class=""><strong>Option 3: Use 10-fold cross-validation</strong></p><p id="21a95b1a-aa71-8055-8c6b-d782db8cf0bb" class="">
+</p><p id="21a95b1a-aa71-8023-a189-d0ac86873237" class="">Absolutely! Let&#x27;s break down <strong>Option 2: 70/30 train-test split</strong> in <strong>full detail</strong> with examples, pros, cons, and why it&#x27;s better than Option 1 but not as good as Option 3.</p><hr id="21a95b1a-aa71-8078-b2b7-f246c0285a9a"/><h2 id="21a95b1a-aa71-80c1-a621-f92e2af1677f" class="">🔹 What is a 70/30 Train-Test Split?</h2><p id="21a95b1a-aa71-80f9-a5d3-f473d8684be5" class="">In this method:</p><ul id="21a95b1a-aa71-8077-b8bf-e3a1b75280ab" class="bulleted-list"><li style="list-style-type:disc"><strong>70% of the dataset</strong> is used to <strong>train</strong> the machine learning model.</li></ul><ul id="21a95b1a-aa71-8034-943e-fba086a2b17d" class="bulleted-list"><li style="list-style-type:disc"><strong>30% of the dataset</strong> is used to <strong>test</strong> how well the model performs on <strong>unseen data</strong>.</li></ul><h3 id="21a95b1a-aa71-802f-989d-f77fd0c5f3a0" class="">🧠 Example:</h3><p id="21a95b1a-aa71-805d-82b4-fa306a0254a8" class="">If you have <strong>5,000 reviews</strong>:</p><ul id="21a95b1a-aa71-8045-935a-dfc587757f94" class="bulleted-list"><li style="list-style-type:disc"><strong>3,500 reviews</strong> → used for training.</li></ul><ul id="21a95b1a-aa71-8081-a08f-d082d0f52529" class="bulleted-list"><li style="list-style-type:disc"><strong>1,500 reviews</strong> → used for testing.</li></ul><hr id="21a95b1a-aa71-800d-bb8f-f2d4d35ba7b9"/><h2 id="21a95b1a-aa71-805c-9f8f-e51ca626ce2a" class="">✅ Why is it Better than Using All Data?</h2><p id="21a95b1a-aa71-8056-9b03-d7d564c22459" class="">In <strong>Option 1 (train and test on the same data)</strong>:</p><ul id="21a95b1a-aa71-8025-a933-e48d443c64ee" class="bulleted-list"><li style="list-style-type:disc">The model already &quot;knows&quot; the data, so it just memorizes.</li></ul><ul id="21a95b1a-aa71-80e8-bab4-d7b444a67c5f" class="bulleted-list"><li style="list-style-type:disc">Accuracy looks high, but it doesn’t reflect <strong>real-world performance</strong>.</li></ul><p id="21a95b1a-aa71-802c-9fd1-e82ae31d296d" class="">In <strong>Option 2 (70/30 split)</strong>:</p><ul id="21a95b1a-aa71-80da-bcf9-dd698b8d943b" class="bulleted-list"><li style="list-style-type:disc">You actually <strong>test on unseen data</strong>, which gives a <strong>better idea</strong> of generalization.</li></ul><ul id="21a95b1a-aa71-80f8-8903-cc80cab1a1dd" class="bulleted-list"><li style="list-style-type:disc">Helps catch overfitting.</li></ul><hr id="21a95b1a-aa71-80aa-998a-dbfa0eb7407c"/><h2 id="21a95b1a-aa71-80a2-990b-ece720b362f1" class="">⚠️ But What&#x27;s the Problem?</h2><h3 id="21a95b1a-aa71-802a-9f88-f2368b1fcd07" class="">1. <strong>Single Split Bias</strong></h3><ul id="21a95b1a-aa71-80c4-8d74-eff13aebf48f" class="bulleted-list"><li style="list-style-type:disc">Your results depend <strong>entirely on how the data was split</strong>.</li></ul><ul id="21a95b1a-aa71-80ba-8d3d-cf69b1d1e45b" class="bulleted-list"><li style="list-style-type:disc">If your 30% test set is <strong>not representative</strong> (e.g., has mostly negative reviews), your evaluation score will be <strong>misleading</strong>.</li></ul><ul id="21a95b1a-aa71-80a3-ad16-d2b19139d194" class="bulleted-list"><li style="list-style-type:disc">You could either:<ul id="21a95b1a-aa71-804c-8928-dd09793ec64e" class="bulleted-list"><li style="list-style-type:circle"><strong>Overestimate</strong> the model (if test set is too easy), or</li></ul><ul id="21a95b1a-aa71-80b0-80da-f69be8af8c62" class="bulleted-list"><li style="list-style-type:circle"><strong>Underestimate</strong> the model (if test set is too hard or skewed).</li></ul></li></ul><hr id="21a95b1a-aa71-80f1-ba19-dad7599e08f3"/><h3 id="21a95b1a-aa71-8076-bb44-e0b9bc85cd1d" class="">2. <strong>Wasted Data</strong></h3><ul id="21a95b1a-aa71-8064-901d-dab0c7c29b24" class="bulleted-list"><li style="list-style-type:disc">Only 70% of your data helps the model learn.</li></ul><ul id="21a95b1a-aa71-80cd-abb5-e3ef5dc06484" class="bulleted-list"><li style="list-style-type:disc">The remaining 30% is just for evaluation.</li></ul><ul id="21a95b1a-aa71-80ac-b689-e956fc2866ce" class="bulleted-list"><li style="list-style-type:disc">In small-to-medium datasets, this is <strong>wasteful</strong> compared to using all data for both training &amp; validation (like in k-fold cross-validation).</li></ul><hr id="21a95b1a-aa71-800e-9a94-d4358a0caf6b"/><h2 id="21a95b1a-aa71-805f-82ec-fcb30ba56dce" class="">🟰 Summary of 70/30 Split:</h2><table id="21a95b1a-aa71-8078-b243-e48a39ccbe6f" class="simple-table"><tbody><tr id="21a95b1a-aa71-8031-b765-fe57a636389f"><td id="M}cF" class="">Feature</td><td id="lOkb" class="">Description</td></tr><tr id="21a95b1a-aa71-80b9-b731-e49456659f8f"><td id="M}cF" class="">✅ Good Practice</td><td id="lOkb" class="">Separates training and testing clearly</td></tr><tr id="21a95b1a-aa71-80aa-8438-f556a59e3de0"><td id="M}cF" class="">❗ Problem</td><td id="lOkb" class="">Only one random split – results may vary</td></tr><tr id="21a95b1a-aa71-8085-a910-c7960db3ba6c"><td id="M}cF" class="">📉 Risk</td><td id="lOkb" class="">Might not represent the whole dataset well</td></tr><tr id="21a95b1a-aa71-804a-9903-c01748b92a34"><td id="M}cF" class="">🧠 Used When</td><td id="lOkb" class="">Dataset is large, and computation time matters</td></tr></tbody></table><hr id="21a95b1a-aa71-80aa-9b93-cc5a817dc4cd"/><h2 id="21a95b1a-aa71-80c7-8e65-d3267c5db0da" class="">🧪 Simple Visual:</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="21a95b1a-aa71-8068-96ff-c671f1e9e244" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">[ Dataset: 100% ]
+|--------|---------------------------|
+| 30%    |           70%            |
+| Test   |         Training         |
+</code></pre><hr id="21a95b1a-aa71-80b2-bb18-c41209cf696c"/><h2 id="21a95b1a-aa71-80ba-aaad-e23ba9913c3a" class="">✅ Conclusion:</h2><ul id="21a95b1a-aa71-8031-bd06-d450113b4079" class="bulleted-list"><li style="list-style-type:disc"><strong>70/30 split</strong> is <strong>better than training on all data</strong>, but:</li></ul><ul id="21a95b1a-aa71-80a3-9e5b-e8287a4f0785" class="bulleted-list"><li style="list-style-type:disc">It can lead to <strong>inconsistent or biased results</strong> if the split isn’t representative.</li></ul><ul id="21a95b1a-aa71-80c6-b245-c3e417698006" class="bulleted-list"><li style="list-style-type:disc">That’s why for smaller datasets, <strong>k-fold cross-validation</strong> is a more robust choice.</li></ul><p id="21a95b1a-aa71-802c-af1e-e116dff41284" class="">Let me know if you want to compare it with <strong>stratified splitting</strong> or want a real-world coding example!</p><p id="21a95b1a-aa71-80e4-ba1d-f14f0ffbed22" class="">
+</p><h3 id="21a95b1a-aa71-802d-908e-d43b58d144a7" class="">📘 <strong>Problem: Large-Scale Click Prediction System</strong></h3><p id="21a95b1a-aa71-8092-9697-fdfb31e5dc28" class="">You are working as a data scientist for an advertising company that serves millions of ads daily. You are tasked with building a machine learning model that predicts whether a user will <strong>click on an ad or not</strong>.</p><p id="21a95b1a-aa71-8083-bc3e-e9cb4b5d0c4e" class="">You’ve collected a dataset of <strong>10 million rows</strong>, where each row represents:</p><ul id="21a95b1a-aa71-80e7-9d19-dfe2b700540c" class="bulleted-list"><li style="list-style-type:disc">User features (age, device type, location, etc.)</li></ul><ul id="21a95b1a-aa71-80d8-bb12-ec1710b232e6" class="bulleted-list"><li style="list-style-type:disc">Ad features (category, size, bid amount)</li></ul><ul id="21a95b1a-aa71-8059-b142-f8c28dca5d50" class="bulleted-list"><li style="list-style-type:disc">Target label: <code>1</code> if the user clicked the ad, <code>0</code> otherwise.</li></ul><hr id="21a95b1a-aa71-80da-9f89-f89edaca3e6a"/><h3 id="21a95b1a-aa71-80ca-a5fb-d22eb4a8b83d" class="">🚨 Problem Details:</h3><ul id="21a95b1a-aa71-8017-9ff5-dba7fcb3f060" class="bulleted-list"><li style="list-style-type:disc">The dataset is <strong>very imbalanced</strong> — only <strong>2% of ads are clicked</strong>.</li></ul><ul id="21a95b1a-aa71-8097-bd63-eaefa460f08c" class="bulleted-list"><li style="list-style-type:disc">You need to <strong>evaluate a model quickly</strong> (e.g., logistic regression or random forest).</li></ul><ul id="21a95b1a-aa71-80fc-b621-ffb32fd28ef6" class="bulleted-list"><li style="list-style-type:disc">Your model will eventually run in real-time on a live system.</li></ul><hr id="21a95b1a-aa71-802b-8262-f9d90ded458b"/><h3 id="21a95b1a-aa71-804b-b078-e09cf9cbc761" class="">❓Question:</h3><p id="21a95b1a-aa71-804b-8068-deadb39bf1c0" class="">Which data splitting strategy would be most appropriate for training and evaluating your model?</p><p id="21a95b1a-aa71-8021-b260-c516087581e0" class=""><strong>Options:</strong></p><ol type="1" id="21a95b1a-aa71-80de-a95f-d5ac064cae93" class="numbered-list" start="1"><li>Use 80% of the data for training and 20% for testing with <strong>random splitting</strong>.</li></ol><ol type="1" id="21a95b1a-aa71-801b-8e29-d7e9e015516f" class="numbered-list" start="2"><li>Use 80/20 <strong>train-test split with stratified sampling</strong> to preserve the class imbalance.</li></ol><ol type="1" id="21a95b1a-aa71-8039-8c40-f115b2f603c5" class="numbered-list" start="3"><li>Use 10-fold cross-validation.</li></ol><hr id="21a95b1a-aa71-8069-8ec0-e0cc947bb026"/><h3 id="21a95b1a-aa71-8070-98e6-d9e0ad7c46d3" class="">✅ <strong>Expected Answer: Option 2 — Train-Test Split with Stratified Sampling</strong></h3><hr id="21a95b1a-aa71-80cd-b10f-db2ebac77677"/><h3 id="21a95b1a-aa71-80f1-9bb4-d390ea0606cf" class="">💬 <strong>Why?</strong></h3><ul id="21a95b1a-aa71-8065-ab74-fb0ecf3b1d4d" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Huge dataset (10 million rows)</strong>: k-fold cross-validation would be <strong>computationally expensive and unnecessary</strong> — even a 20% test set has 2 million rows!</li></ul><ul id="21a95b1a-aa71-805a-a0fa-c4e67aa4b980" class="bulleted-list"><li style="list-style-type:disc">❌ <strong>Random splitting</strong> might create a test set with <strong>wrong class proportions</strong>, especially since only 2% of data is &quot;clicked&quot;.</li></ul><ul id="21a95b1a-aa71-8003-84d2-dee19328a8e5" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Stratified sampling</strong> ensures <strong>both train and test sets have the same proportion</strong> of <code>clicked</code> vs <code>not clicked</code>, leading to fairer and more consistent model evaluation.</li></ul><p id="21a95b1a-aa71-804b-af8c-c47921eb0e64" class="">Sure! Here&#x27;s <strong>another problem</strong> where stratified sampling is necessary — this time from a <strong>healthcare domain</strong>, which is a common real-world scenario.</p><hr id="21a95b1a-aa71-8078-9235-e5698dc04b4e"/><h2 id="21a95b1a-aa71-8045-846c-ed3149232b8a" class="">🏥 <strong>Problem: Disease Detection Classifier</strong></h2><p id="21a95b1a-aa71-80ce-8b18-ef470959113d" class="">You are working on a machine learning model to detect whether a patient has a <strong>rare heart disease</strong> based on their clinical records (age, blood pressure, cholesterol, ECG readings, etc.).</p><p id="21a95b1a-aa71-80a7-af85-f028e11c14b8" class="">You are given a dataset of <strong>25,000 patient records</strong>, with the following distribution:</p><ul id="21a95b1a-aa71-8011-9f1f-f3430c8d9511" class="bulleted-list"><li style="list-style-type:disc"><strong>1,000 patients have the disease</strong> (positive class = 1)</li></ul><ul id="21a95b1a-aa71-8076-96c8-ccded6bc8f9d" class="bulleted-list"><li style="list-style-type:disc"><strong>24,000 patients do not</strong> (negative class = 0)</li></ul><p id="21a95b1a-aa71-8009-a7fa-dbf517c2ce2a" class="">So only <strong>4%</strong> of the patients have the disease.</p><p id="21a95b1a-aa71-8042-b414-e837bcedc1a1" class="">Your goal is to <strong>train a classifier</strong> to predict if a new patient might have the disease.</p><hr id="21a95b1a-aa71-8041-82a4-c222e036fbb5"/><h3 id="21a95b1a-aa71-8039-b5b7-d82dcade0bc8" class="">❓Question:</h3><p id="21a95b1a-aa71-80f6-903d-ce4b0200fdc1" class="">You need to evaluate your model’s performance. Which data-splitting strategy is the most appropriate?</p><hr id="21a95b1a-aa71-80d3-9233-ec3ea7580942"/><h3 id="21a95b1a-aa71-8075-a65e-dbb17e0a7600" class="">Options:</h3><ol type="1" id="21a95b1a-aa71-80bf-bb8e-cc25648b1c7d" class="numbered-list" start="1"><li>Randomly split 80% for training, 20% for testing.</li></ol><ol type="1" id="21a95b1a-aa71-8089-aa24-e9ac80824a80" class="numbered-list" start="2"><li>Use stratified sampling to split 80% training, 20% testing.</li></ol><ol type="1" id="21a95b1a-aa71-802c-9efb-e42a38da26c2" class="numbered-list" start="3"><li>Use 10-fold cross-validation.</li></ol><hr id="21a95b1a-aa71-8009-9e53-f9533436a4d4"/><h3 id="21a95b1a-aa71-8006-b4c9-fa5cca7623ce" class="">✅ <strong>Correct Answer: Option 2 — Stratified Sampling</strong></h3><hr id="21a95b1a-aa71-80b6-a25d-c64babf96fa2"/><h3 id="21a95b1a-aa71-80db-a16d-c0cff41808b7" class="">💬 <strong>Explanation:</strong></h3><ul id="21a95b1a-aa71-803c-8269-c1784bf12857" class="bulleted-list"><li style="list-style-type:disc">❌ <strong>Option 1</strong> (random split):<ul id="21a95b1a-aa71-8015-8f7b-c39ea378b46a" class="bulleted-list"><li style="list-style-type:circle">You <strong>might accidentally get a test set with very few or even zero disease-positive cases</strong>.</li></ul><ul id="21a95b1a-aa71-8033-a717-dd1e5b5d54c6" class="bulleted-list"><li style="list-style-type:circle">That would make performance metrics like recall or F1-score <strong>unreliable</strong>.</li></ul></li></ul><ul id="21a95b1a-aa71-809e-b66d-f781c94fd644" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Option 2</strong> (stratified split):<ul id="21a95b1a-aa71-8084-8b9d-d0910f03cfee" class="bulleted-list"><li style="list-style-type:circle">Ensures both training and test sets have <strong>4% positive and 96% negative cases</strong>.</li></ul><ul id="21a95b1a-aa71-8027-a205-ec7b201ec58a" class="bulleted-list"><li style="list-style-type:circle">Gives you <strong>fair evaluation</strong> on both classes.</li></ul></li></ul><ul id="21a95b1a-aa71-805f-bc1e-c2595606e922" class="bulleted-list"><li style="list-style-type:disc">⚠️ <strong>Option 3</strong> (10-fold CV):<ul id="21a95b1a-aa71-80ac-847f-f9120e1f0794" class="bulleted-list"><li style="list-style-type:circle">Also fine, but may be <strong>too computationally heavy</strong> if you&#x27;re testing multiple models or tuning hyperparameters.</li></ul></li></ul><hr id="21a95b1a-aa71-809c-bd46-f9104aae322a"/><h3 id="21a95b1a-aa71-808f-bde0-df01f1e4fa90" class="">💡 Bonus Tip:</h3><p id="21a95b1a-aa71-801b-b7d7-d64e40927712" class="">Always use <strong>stratified sampling</strong> when:</p><ul id="21a95b1a-aa71-8025-ba93-c3448bd7f41a" class="bulleted-list"><li style="list-style-type:disc">Your target classes are <strong>imbalanced</strong>, and</li></ul><ul id="21a95b1a-aa71-8066-ae9e-ca7373323cb6" class="bulleted-list"><li style="list-style-type:disc">You are doing a <strong>train-test split</strong> instead of full cross-validation.</li></ul><hr id="21a95b1a-aa71-80f4-a670-f9225598c0c5"/><p id="21a95b1a-aa71-8002-9e84-c2fed62b7895" class="">Let me know if you want a <strong>version of this question for quizzes</strong>, or a <strong>code implementation</strong> in Python!</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

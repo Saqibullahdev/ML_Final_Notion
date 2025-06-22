@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Problem: Choosing the Right Model</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21a95b1a-aa71-8001-8b9f-fa1a8d146475" class="page sans"><header><h1 class="page-title"><strong>Problem: Choosing the Right Model</strong></h1><p class="page-description"></p></header><div class="page-body"><hr id="21a95b1a-aa71-8026-ad82-e6cf996db802"/><h3 id="21a95b1a-aa71-805f-aa7d-ce285f3d743e" class=""><strong>Problem: Choosing the Right Model</strong></h3><p id="21a95b1a-aa71-800e-8ddd-e0bb7abe52cd" class="">You&#x27;re working as a data scientist at a company that maintains hundreds of industrial machines. The company recently experienced unexpected machine failures, and management wants to build a system to predict future failures.</p><p id="21a95b1a-aa71-802c-b6c8-ea56c06e62d4" class="">You are given the following data:</p><ul id="21a95b1a-aa71-8087-9e0a-fc055bc83c8d" class="bulleted-list"><li style="list-style-type:disc">Logs from 5 years of machine operations (temperature, vibration levels, performance metrics).</li></ul><ul id="21a95b1a-aa71-807e-8f13-c954029a4e5f" class="bulleted-list"><li style="list-style-type:disc">About <strong>50,000 records</strong> of normal machine behavior.</li></ul><ul id="21a95b1a-aa71-8046-916d-c242546f2ed5" class="bulleted-list"><li style="list-style-type:disc">Only <strong>20 records</strong> of machine failure events.</li></ul><p id="21a95b1a-aa71-801b-85b0-e7303ebf5883" class="">You are asked to choose between <strong>Anomaly Detection</strong> and <strong>Supervised Learning</strong> to build a model that alerts the team when a machine may fail.</p><hr id="21a95b1a-aa71-80fe-b205-f5674e839e4b"/><h3 id="21a95b1a-aa71-8058-a864-f55e32e6caaf" class=""><strong>Task for Students:</strong></h3><ol type="1" id="21a95b1a-aa71-805c-bbb0-d50e71c19fab" class="numbered-list" start="1"><li>Analyze the nature of the data (number of positive and negative examples).</li></ol><ol type="1" id="21a95b1a-aa71-8041-819a-d5ccc809f1f2" class="numbered-list" start="2"><li>Decide whether to use <strong>Anomaly Detection</strong> or <strong>Supervised Learning</strong>.</li></ol><ol type="1" id="21a95b1a-aa71-80ad-8eea-ebf2837dd11a" class="numbered-list" start="3"><li>Justify your choice using concepts like training example balance, generalization, and future data behavior.</li></ol><hr id="21a95b1a-aa71-809c-8079-d33ce80c042a"/><h3 id="21a95b1a-aa71-8078-918e-c119a66d263b" class="">✅ <strong>Solution:</strong></h3><p id="21a95b1a-aa71-805a-9e3a-fd1c1e44b34c" class=""><strong>Model to Use:</strong> <strong>Anomaly Detection</strong></p><p id="21a95b1a-aa71-8030-b585-c3680d66e4f1" class=""><strong>Justification:</strong></p><ul id="21a95b1a-aa71-809a-9515-efb911812a1d" class="bulleted-list"><li style="list-style-type:disc">There is a <strong>very small number of positive examples</strong> (only 20 failures) and a <strong>large number of negative examples</strong> (normal operation).</li></ul><ul id="21a95b1a-aa71-8089-b7b0-c8cbb2797a2b" class="bulleted-list"><li style="list-style-type:disc"><strong>Future machine failures</strong> might look different from past ones.</li></ul><ul id="21a95b1a-aa71-80f4-8892-fed24f81c39a" class="bulleted-list"><li style="list-style-type:disc">This fits the characteristics of Anomaly Detection:<ul id="21a95b1a-aa71-80f1-9e7d-f3d06c683de5" class="bulleted-list"><li style="list-style-type:circle">Few positive examples (y = 1).</li></ul><ul id="21a95b1a-aa71-807e-acc0-c7ad6a8ba5e2" class="bulleted-list"><li style="list-style-type:circle">Many negative examples (y = 0).</li></ul><ul id="21a95b1a-aa71-807e-a8ba-d3997db20fb9" class="bulleted-list"><li style="list-style-type:circle">High uncertainty in what future anomalies will look like.</li></ul></li></ul><p id="21a95b1a-aa71-8050-86c5-e6a5b6593d97" class=""><strong>Supervised Learning is not suitable</strong> here because it requires <strong>enough positive examples</strong> for the model to learn what a failure looks like, and that condition is not met in this problem.</p><hr id="21a95b1a-aa71-809a-b73e-c42ff4922ac7"/><p id="21a95b1a-aa71-8018-ba0d-c9657278e60e" class="">Would you like me to generate more such problems or turn this into a quiz or assignment?</p><p id="21a95b1a-aa71-8014-a3db-f9359d5e5324" class="">
+</p><p id="21a95b1a-aa71-805f-8241-e5c19a560c56" class="">Great challenge! Here&#x27;s a <strong>less common but realistic problem</strong> supporting <strong>Supervised Learning</strong>, designed to make students think outside the usual email/cancer/fraud use cases:</p><hr id="21a95b1a-aa71-8071-9067-c17e6e86c5e7"/><h3 id="21a95b1a-aa71-801a-a483-d6ea6447b917" class=""><strong>Problem: Choosing the Right Model</strong></h3><p id="21a95b1a-aa71-806f-8231-f2ee220cac4b" class="">You are working with a <strong>smart agriculture startup</strong> building an AI system to predict <strong>crop disease</strong> based on drone images and sensor data from fields.</p><p id="21a95b1a-aa71-8093-bb62-f30162b10ccb" class="">You are given:</p><ul id="21a95b1a-aa71-80e1-8a8d-d87c4750c2e5" class="bulleted-list"><li style="list-style-type:disc"><strong>20,000 labeled records</strong>, each tagged as either <strong>“healthy crop”</strong> or <strong>“infected crop”</strong>.</li></ul><ul id="21a95b1a-aa71-808c-bb0f-f8681975105a" class="bulleted-list"><li style="list-style-type:disc">Each record includes:<ul id="21a95b1a-aa71-8082-882a-e727bce39a9c" class="bulleted-list"><li style="list-style-type:circle">Multispectral drone images.</li></ul><ul id="21a95b1a-aa71-80fd-a641-d95c2667599b" class="bulleted-list"><li style="list-style-type:circle">Soil moisture levels.</li></ul><ul id="21a95b1a-aa71-80cc-8ae0-e41a11c0c8f4" class="bulleted-list"><li style="list-style-type:circle">Leaf color metrics.</li></ul><ul id="21a95b1a-aa71-803a-aaf8-ca22435a5f6b" class="bulleted-list"><li style="list-style-type:circle">Temperature/humidity data.</li></ul></li></ul><ul id="21a95b1a-aa71-80e3-91de-f5ab30ad2dc5" class="bulleted-list"><li style="list-style-type:disc">About <strong>30% of the crops</strong> in the dataset are infected.</li></ul><ul id="21a95b1a-aa71-800e-9c48-dbc99e7156ca" class="bulleted-list"><li style="list-style-type:disc">The infected crops show <strong>recognizable patterns</strong> (e.g., color shifts, moisture loss).</li></ul><ul id="21a95b1a-aa71-800c-9e5d-fd13499d1ce8" class="bulleted-list"><li style="list-style-type:disc">Agronomists confirm future infections are likely to follow similar biological indicators.</li></ul><p id="21a95b1a-aa71-80d7-a00d-de0885f1625c" class="">Your job is to build a model that helps farmers detect infections early and apply targeted treatment.</p><hr id="21a95b1a-aa71-8019-9793-dcc281a668e4"/><h3 id="21a95b1a-aa71-80ed-b896-f1575e99a241" class=""><strong>Task for Students:</strong></h3><ol type="1" id="21a95b1a-aa71-80f8-a907-edb272d51d6e" class="numbered-list" start="1"><li>Review the data distribution and feature structure.</li></ol><ol type="1" id="21a95b1a-aa71-8020-9005-c49abfaef126" class="numbered-list" start="2"><li>Choose between <strong>Anomaly Detection</strong> and <strong>Supervised Learning</strong>.</li></ol><ol type="1" id="21a95b1a-aa71-8065-b243-eaa7a03bb881" class="numbered-list" start="3"><li>Provide a clear justification using machine learning principles.</li></ol><hr id="21a95b1a-aa71-80e0-af69-f759257e4768"/><h3 id="21a95b1a-aa71-80aa-9f21-c29a738d3636" class="">✅ <strong>Solution:</strong></h3><p id="21a95b1a-aa71-8091-88de-fab5876ae677" class=""><strong>Model to Use:</strong> <strong>Supervised Learning</strong></p><p id="21a95b1a-aa71-8011-b66c-d058899a4a79" class=""><strong>Justification:</strong></p><ul id="21a95b1a-aa71-80a5-a3a9-ef3c10b8fc04" class="bulleted-list"><li style="list-style-type:disc">The dataset has a <strong>substantial number of labeled examples</strong> for both infected and healthy crops.</li></ul><ul id="21a95b1a-aa71-80f3-9381-d3950456e961" class="bulleted-list"><li style="list-style-type:disc">The infected crop examples are <strong>not extremely rare</strong> (30%) and follow <strong>consistent, learnable patterns</strong>.</li></ul><ul id="21a95b1a-aa71-80a3-89eb-d10e320d4a13" class="bulleted-list"><li style="list-style-type:disc"><strong>Future infected crops</strong> are expected to look similar to the training data, making generalization feasible.</li></ul><ul id="21a95b1a-aa71-80c1-8825-e1ad10696fbe" class="bulleted-list"><li style="list-style-type:disc">The structured features (images + sensor data) are ideal for training a supervised model to classify the crops accurately.</li></ul><p id="21a95b1a-aa71-80a0-b0e7-e1fd305fc141" class=""><strong>Anomaly Detection</strong> would not be appropriate here because:</p><ul id="21a95b1a-aa71-803c-85f3-c91782d72d33" class="bulleted-list"><li style="list-style-type:disc">The imbalance is not extreme.</li></ul><ul id="21a95b1a-aa71-804e-a09c-c45cb00db1df" class="bulleted-list"><li style="list-style-type:disc">Infected crops are <strong>well-represented and labeled</strong>.</li></ul><ul id="21a95b1a-aa71-808e-b19d-f25fd65e6277" class="bulleted-list"><li style="list-style-type:disc">The goal is classification, not spotting unknown rare events.</li></ul><hr id="21a95b1a-aa71-807e-a3c9-e755d2d9f939"/><p id="21a95b1a-aa71-8010-bc6c-f4a16d49ac1b" class="">Would you like a similarly creative one for <strong>Anomaly Detection</strong> now?</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

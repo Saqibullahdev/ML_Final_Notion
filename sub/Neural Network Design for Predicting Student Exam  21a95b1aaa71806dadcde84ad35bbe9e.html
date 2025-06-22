@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Neural Network Design for Predicting Student Exam Result</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21a95b1a-aa71-806d-adcd-e84ad35bbe9e" class="page sans"><header><h1 class="page-title"><strong>Neural Network Design for Predicting Student Exam Result</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="21a95b1a-aa71-8008-a790-d28b5ff1e136" class="">To answer this question clearly and get full marks, here’s how you can define the input layer, hidden layer(s), and output layer for the given neural network:</p><hr id="21a95b1a-aa71-8058-8826-db7d94da79ba"/><p id="21a95b1a-aa71-8039-b839-e9e70a1994cb" class="">
+</p><p id="21a95b1a-aa71-806a-849f-f6d750749195" class=""><strong>Problem Statement:</strong></p><p id="21a95b1a-aa71-806f-9484-e6e5c4ba2808" class="">Develop a neural network to predict whether a student will <strong>pass or fail</strong> based on their <strong>study hours</strong> and <strong>attendance record</strong>.</p><hr id="21a95b1a-aa71-80c5-badd-d9ad768992e8"/><h3 id="21a95b1a-aa71-8006-9510-d86244b64948" class=""><strong>1. Input Layer</strong></h3><ul id="21a95b1a-aa71-80e6-8a88-c2c92271ade9" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Neurons:</strong> 2</li></ul><ul id="21a95b1a-aa71-80d2-9eca-e7cf2c678e57" class="bulleted-list"><li style="list-style-type:disc"><strong>Features:</strong><ul id="21a95b1a-aa71-8044-9c90-d2130157ef35" class="bulleted-list"><li style="list-style-type:circle">Study hours</li></ul><ul id="21a95b1a-aa71-809a-a780-f7f11a80fdad" class="bulleted-list"><li style="list-style-type:circle">Attendance record<p id="21a95b1a-aa71-80b1-8f79-fa4ef27a154d" class="">These are the two input features going into the network.</p></li></ul></li></ul><hr id="21a95b1a-aa71-8008-9bb2-ec9b81bf1d7f"/><h3 id="21a95b1a-aa71-80b4-9007-cbdb5430a78b" class=""><strong>2. Hidden Layer(s)</strong></h3><p id="21a95b1a-aa71-80af-b1c9-ec6b9bfb9b3f" class="">You can have <strong>1 or 2 hidden layers</strong>, depending on the complexity.</p><ul id="21a95b1a-aa71-80fa-afb6-e13d9908dea1" class="bulleted-list"><li style="list-style-type:disc"><strong>Example with 1 Hidden Layer:</strong><ul id="21a95b1a-aa71-8076-8581-c3143760fa4c" class="bulleted-list"><li style="list-style-type:circle"><strong>Number of Neurons:</strong> 4 (can be adjusted)</li></ul><ul id="21a95b1a-aa71-80b6-8cc8-c5af53de1a0b" class="bulleted-list"><li style="list-style-type:circle"><strong>Activation Function:</strong> ReLU (Rectified Linear Unit)</li></ul></li></ul><p id="21a95b1a-aa71-808c-b8aa-faced9465bb6" class="">If more complexity is needed, you can add another hidden layer:</p><ul id="21a95b1a-aa71-8057-b1fd-d614733f18f2" class="bulleted-list"><li style="list-style-type:disc"><strong>Second Hidden Layer (optional):</strong><ul id="21a95b1a-aa71-8042-ba82-f4abdf0bd9b8" class="bulleted-list"><li style="list-style-type:circle"><strong>Number of Neurons:</strong> 2–3</li></ul><ul id="21a95b1a-aa71-8076-9b19-c67a447633ab" class="bulleted-list"><li style="list-style-type:circle"><strong>Activation Function:</strong> ReLU</li></ul></li></ul><hr id="21a95b1a-aa71-8079-9671-e5bb50fed280"/><h3 id="21a95b1a-aa71-80c6-aef4-c5ca8c1ed27e" class=""><strong>3. Output Layer</strong></h3><ul id="21a95b1a-aa71-8027-887f-f1575f161dd8" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Neurons:</strong> 1</li></ul><ul id="21a95b1a-aa71-80d2-8c2b-f5efaefb8e2f" class="bulleted-list"><li style="list-style-type:disc"><strong>Purpose:</strong> To predict whether the student will pass or fail.</li></ul><ul id="21a95b1a-aa71-803e-a876-cfe2653d65bd" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> Sigmoid<ul id="21a95b1a-aa71-807c-8303-fd6940f33a37" class="bulleted-list"><li style="list-style-type:circle">The sigmoid outputs a value between 0 and 1:<ul id="21a95b1a-aa71-8044-9c47-cb3054a3422d" class="bulleted-list"><li style="list-style-type:square">Closer to 0 → Fail</li></ul><ul id="21a95b1a-aa71-8076-9010-c97206bb2753" class="bulleted-list"><li style="list-style-type:square">Closer to 1 → Pass</li></ul></li></ul></li></ul><hr id="21a95b1a-aa71-8067-bcb8-f83899c239ad"/><h3 id="21a95b1a-aa71-807f-b4bb-fdb571d13a37" class=""><strong>Final Answer Summary:</strong></h3><ul id="21a95b1a-aa71-80c9-b154-d30fd29b3c31" class="bulleted-list"><li style="list-style-type:disc"><strong>Input Layer:</strong> 2 neurons (Study hours, Attendance)</li></ul><ul id="21a95b1a-aa71-8019-af08-eefe4cceac16" class="bulleted-list"><li style="list-style-type:disc"><strong>Hidden Layer(s):</strong><ul id="21a95b1a-aa71-80c6-9e23-c564c72146bf" class="bulleted-list"><li style="list-style-type:circle">1 hidden layer with 4 neurons (ReLU activation)</li></ul></li></ul><ul id="21a95b1a-aa71-8017-8441-d8cc4fcdf705" class="bulleted-list"><li style="list-style-type:disc"><strong>Output Layer:</strong> 1 neuron (Sigmoid activation for binary classification)</li></ul><hr id="21a95b1a-aa71-8006-8f58-e7f5c6265242"/><p id="21a95b1a-aa71-80f0-9312-f9833a905207" class="">Let me know if you want this turned into a diagram or handwritten format!</p><p id="21a95b1a-aa71-809f-a1e2-f84c5ad43041" class="">Great questions, Saqib! Let me explain both clearly:</p><hr id="21a95b1a-aa71-8064-b850-d648ec07d643"/><h3 id="21a95b1a-aa71-806e-85b4-f9e96a75b07f" class="">🔹 <strong>Why did we use 4 neurons in the hidden layer?</strong></h3><p id="21a95b1a-aa71-802b-a7b8-f4558c1f30cd" class="">There’s <strong>no fixed rule</strong> for the number of neurons in a hidden layer — it depends on the <strong>complexity of the problem</strong> and <strong>experimenting</strong>.</p><p id="21a95b1a-aa71-80db-9578-e64d838cb8c1" class="">But here are some <strong>common practices</strong> and <strong>reasons</strong> for choosing <strong>4 neurons</strong>:</p><ol type="1" id="21a95b1a-aa71-80af-b00a-e38a23976b5b" class="numbered-list" start="1"><li><strong>Trial-and-error approach:</strong><ul id="21a95b1a-aa71-808d-ba06-e82bc49a4b7d" class="bulleted-list"><li style="list-style-type:disc">Start small (e.g. 3–5 neurons) and tune based on performance.</li></ul><ul id="21a95b1a-aa71-801f-87a2-d3c93f62d830" class="bulleted-list"><li style="list-style-type:disc">Too few neurons → model underfits (can&#x27;t learn enough)</li></ul><ul id="21a95b1a-aa71-80f1-bb87-fbffdf1dcdf9" class="bulleted-list"><li style="list-style-type:disc">Too many neurons → model overfits (learns too much, poor generalization)</li></ul></li></ol><ol type="1" id="21a95b1a-aa71-80ac-8af7-d468f649e3f0" class="numbered-list" start="2"><li><strong>Heuristic (rule of thumb):</strong><ul id="21a95b1a-aa71-8041-9fcc-e2287ac707fe" class="bulleted-list"><li style="list-style-type:disc">A common heuristic is:<p id="21a95b1a-aa71-809c-9c71-c62519de5c75" class=""><code>Number of hidden neurons ≈ (Number of input + output neurons) / 2</code></p><p id="21a95b1a-aa71-809c-b23d-e0b4cd42c6eb" class="">→ (2 input + 1 output) / 2 = 1.5 → round up → try 3–5 neurons.</p></li></ul></li></ol><ol type="1" id="21a95b1a-aa71-801e-99f0-e70b0b7d731e" class="numbered-list" start="3"><li><strong>Simplicity:</strong><ul id="21a95b1a-aa71-808d-9ad0-f4193d082ef6" class="bulleted-list"><li style="list-style-type:disc">Since we only have <strong>2 input features</strong>, we don’t need a very complex hidden layer.</li></ul></li></ol><p id="21a95b1a-aa71-80cc-85ac-d13df9927e2d" class="">✅ <strong>So, 4 is a reasonable starting choice</strong> — you can increase or decrease it during training.</p><hr id="21a95b1a-aa71-8057-9e4c-eed2d4192124"/><h3 id="21a95b1a-aa71-804a-ba0e-eaf273533623" class="">🔹 <strong>Why use ReLU instead of Sigmoid in the hidden layer?</strong></h3><p id="21a95b1a-aa71-807d-9a95-fd847e9182d3" class="">✅ <strong>Reason we use ReLU:</strong></p><ol type="1" id="21a95b1a-aa71-8048-9124-e1016a7a5f07" class="numbered-list" start="1"><li><strong>Avoid vanishing gradients:</strong><ul id="21a95b1a-aa71-8086-9d70-db6175ab1f82" class="bulleted-list"><li style="list-style-type:disc">Sigmoid squashes values between 0 and 1.</li></ul><ul id="21a95b1a-aa71-8071-8249-c3ac2781df95" class="bulleted-list"><li style="list-style-type:disc">In deep networks, this leads to <strong>very small gradients</strong>, which <strong>slow down or stop learning</strong> (called <em>vanishing gradient problem</em>).</li></ul><ul id="21a95b1a-aa71-8020-94b5-c36ab4560f2e" class="bulleted-list"><li style="list-style-type:disc">ReLU doesn’t have this issue for positive values.</li></ul></li></ol><ol type="1" id="21a95b1a-aa71-8093-8abc-ededc8f07c72" class="numbered-list" start="2"><li><strong>ReLU is faster:</strong><ul id="21a95b1a-aa71-80a9-bfab-d48dc7e7da02" class="bulleted-list"><li style="list-style-type:disc">It’s computationally simpler: <code>ReLU(x) = max(0, x)</code></li></ul><ul id="21a95b1a-aa71-8067-89d6-f68c55dbb7a2" class="bulleted-list"><li style="list-style-type:disc">Speeds up training compared to sigmoid or tanh.</li></ul></li></ol><ol type="1" id="21a95b1a-aa71-8011-8bad-df0ed7188ff7" class="numbered-list" start="3"><li><strong>ReLU allows sparsity:</strong><ul id="21a95b1a-aa71-80b9-8d65-c654a43eb1e8" class="bulleted-list"><li style="list-style-type:disc">It outputs 0 for negative values, which <strong>reduces complexity</strong> and <strong>activates fewer neurons</strong>, making the model faster and often more accurate.</li></ul></li></ol><hr id="21a95b1a-aa71-8037-968b-e96cc0fb205d"/><h3 id="21a95b1a-aa71-805f-ac6e-fae8dde1b1c4" class="">❗But why not use sigmoid in hidden layer?</h3><ul id="21a95b1a-aa71-8088-8089-d79541d718c9" class="bulleted-list"><li style="list-style-type:disc">Sigmoid is <strong>still used</strong> in:<ul id="21a95b1a-aa71-80a0-b3e2-c7e59d2078e2" class="bulleted-list"><li style="list-style-type:circle">Output layer for <strong>binary classification</strong> (as in your case: pass/fail).</li></ul></li></ul><ul id="21a95b1a-aa71-804b-81e9-c955d4382b82" class="bulleted-list"><li style="list-style-type:disc">But in <strong>hidden layers</strong>, it&#x27;s mostly <strong>avoided</strong> due to vanishing gradients and slower training.</li></ul><hr id="21a95b1a-aa71-8020-b034-d2081ade28b1"/><h3 id="21a95b1a-aa71-803e-9df3-f205cd0755bb" class="">✅ Summary:</h3><table id="21a95b1a-aa71-8046-a617-e2d1c6343020" class="simple-table"><tbody><tr id="21a95b1a-aa71-8045-96f4-f6653d4bce4a"><td id="qq|O" class="">Layer</td><td id="Ke={" class="">Neurons</td><td id="r}zl" class="">Activation Function</td><td id="YDwT" class="">Why?</td></tr><tr id="21a95b1a-aa71-807f-8b86-c5c786955c80"><td id="qq|O" class="">Input Layer</td><td id="Ke={" class="">2</td><td id="r}zl" class="">None</td><td id="YDwT" class="">Study hours, Attendance</td></tr><tr id="21a95b1a-aa71-80d2-84fc-ebb86a646a6f"><td id="qq|O" class="">Hidden Layer</td><td id="Ke={" class="">4</td><td id="r}zl" class="">ReLU</td><td id="YDwT" class="">Fast, avoids vanishing gradient</td></tr><tr id="21a95b1a-aa71-808b-8368-e1880513a2b6"><td id="qq|O" class="">Output Layer</td><td id="Ke={" class="">1</td><td id="r}zl" class="">Sigmoid</td><td id="YDwT" class="">For binary output: pass/fail</td></tr></tbody></table><p id="21a95b1a-aa71-808c-a19f-e937c0551376" class="">Let me know if you want to visualize this or simulate with Python!</p><p id="21a95b1a-aa71-80bf-bcc4-d7d188b4ec4a" class="">
+</p><hr id="21a95b1a-aa71-8013-8b15-de98adc32b53"/><h3 id="21a95b1a-aa71-8004-a7f5-fb56608a726c" class="">🔸 <strong>Practice Question:</strong></h3><blockquote id="21a95b1a-aa71-8012-b083-e68522332098" class="">Suppose you are developing a neural network to predict whether a customer will buy a product based on their age, income, and number of previous purchases. Define the input layer, hidden layer(s), and output layer of this neural network.</blockquote><hr id="21a95b1a-aa71-804d-af21-d1dd776cd399"/><h3 id="21a95b1a-aa71-80d3-8e78-ec2f4179ee1f" class="">✅ <strong>Step-by-Step Solution:</strong></h3><h3 id="21a95b1a-aa71-8073-b38b-f14be531dbc7" class=""><strong>1. Input Layer</strong></h3><ul id="21a95b1a-aa71-8047-953a-ce7513532323" class="bulleted-list"><li style="list-style-type:disc"><strong>Features (inputs):</strong><ul id="21a95b1a-aa71-803f-8d56-c9513e797445" class="bulleted-list"><li style="list-style-type:circle">Age</li></ul><ul id="21a95b1a-aa71-8060-859e-f937928546f6" class="bulleted-list"><li style="list-style-type:circle">Income</li></ul><ul id="21a95b1a-aa71-805c-ab9d-ecca9f72022c" class="bulleted-list"><li style="list-style-type:circle">Number of previous purchases</li></ul></li></ul><ul id="21a95b1a-aa71-80bb-a35a-d20a24101b49" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Neurons:</strong> 3</li></ul><h3 id="21a95b1a-aa71-801f-b93b-f92def7b412f" class=""><strong>2. Hidden Layer(s)</strong></h3><p id="21a95b1a-aa71-80f1-9f0e-ca045ee94092" class="">Start with <strong>1 hidden layer</strong>, since the input is simple.</p><ul id="21a95b1a-aa71-80c7-b420-dd13a7d41325" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Neurons:</strong> Try <strong>5 neurons</strong><ul id="21a95b1a-aa71-8001-82c6-de1c7bedf44d" class="bulleted-list"><li style="list-style-type:circle">Reason: (3 inputs + 1 output) / 2 = 2 → try 3 to 6 neurons experimentally</li></ul></li></ul><ul id="21a95b1a-aa71-809b-bf83-cf49b7b27303" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>ReLU</strong><ul id="21a95b1a-aa71-806d-bfb6-c1c5f88fef26" class="bulleted-list"><li style="list-style-type:circle">Faster learning</li></ul><ul id="21a95b1a-aa71-80fb-b5ec-d871c7a5b377" class="bulleted-list"><li style="list-style-type:circle">Avoids vanishing gradient</li></ul><ul id="21a95b1a-aa71-80c3-94d7-efd246c92033" class="bulleted-list"><li style="list-style-type:circle">Widely used in modern networks</li></ul></li></ul><h3 id="21a95b1a-aa71-801d-99f5-f8b957fd6dd3" class=""><strong>3. Output Layer</strong></h3><ul id="21a95b1a-aa71-8069-96cd-ed61c7a66587" class="bulleted-list"><li style="list-style-type:disc"><strong>Goal:</strong> Predict if the customer will buy the product (Yes or No)</li></ul><ul id="21a95b1a-aa71-80f1-a093-c5d1352f90e8" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Neurons:</strong> 1</li></ul><ul id="21a95b1a-aa71-801b-aca2-df4800bd48c7" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>Sigmoid</strong><ul id="21a95b1a-aa71-807f-8a62-f6bc9b5c4ead" class="bulleted-list"><li style="list-style-type:circle">Because it outputs a value between 0 and 1 (used in binary classification)</li></ul></li></ul><hr id="21a95b1a-aa71-80a2-ad02-dce7094fc22b"/><h3 id="21a95b1a-aa71-8041-b44f-ecda6b80e7b5" class="">🧠 <strong>General Pattern to Follow in Exam:</strong></h3><ol type="1" id="21a95b1a-aa71-8070-8eb4-ebd6f6143295" class="numbered-list" start="1"><li><strong>Understand the input features</strong><p id="21a95b1a-aa71-803a-a1b7-e5ac350ea3f2" class="">→ Count how many features you’ll feed into the network</p></li></ol><ol type="1" id="21a95b1a-aa71-80c1-b66a-e6f858cf5c99" class="numbered-list" start="2"><li><strong>Design the input layer</strong><p id="21a95b1a-aa71-8006-b6ea-e10e1115ecfd" class="">→ Number of neurons = number of input features</p></li></ol><ol type="1" id="21a95b1a-aa71-8097-8ddf-df24d182fd69" class="numbered-list" start="3"><li><strong>Add hidden layer(s)</strong><p id="21a95b1a-aa71-80b4-8ff4-ed9636fce3a4" class="">→ Start with 1 layer, 3–6 neurons</p><p id="21a95b1a-aa71-80a5-938a-f3526e22c74d" class="">→ Use <strong>ReLU</strong> activation</p></li></ol><ol type="1" id="21a95b1a-aa71-80b8-be69-e0a43bcf3ec0" class="numbered-list" start="4"><li><strong>Design the output layer</strong><p id="21a95b1a-aa71-8033-8674-f1a99667b37a" class="">→ Binary classification → 1 neuron with <strong>Sigmoid</strong></p><p id="21a95b1a-aa71-80c9-ac63-ccd42eb56367" class="">→ Multi-class → Use <strong>Softmax</strong></p></li></ol><ol type="1" id="21a95b1a-aa71-808c-a959-c644a38e6550" class="numbered-list" start="5"><li><strong>Optional:</strong> Brief explanation of activation functions and reasoning</li></ol><hr id="21a95b1a-aa71-8043-a1f9-db3258e2b0e3"/><h3 id="21a95b1a-aa71-80f4-9937-c702a4849b6b" class="">🔁 Want Another Practice?</h3><p id="21a95b1a-aa71-8099-a58c-e5074891ea15" class="">Let me know the topic (e.g. house price prediction, weather forecast, loan approval), and I’ll create another one to match!</p><p id="21a95b1a-aa71-807a-bd14-c1936325af8d" class="">
+</p><p id="21a95b1a-aa71-802c-82a4-c005d35b7e24" class="">Perfect, Saqib! Let’s now do an example that uses a <strong>different activation function at the output layer</strong>, specifically for a <strong>multi-class classification problem</strong> (i.e., more than 2 categories), which uses <strong>Softmax</strong> instead of Sigmoid.</p><hr id="21a95b1a-aa71-80e0-9257-f3d969abf007"/><h3 id="21a95b1a-aa71-805b-a72a-ccab993966eb" class="">🔸 <strong>Practice Question (Multi-class Classification):</strong></h3><blockquote id="21a95b1a-aa71-80e6-b8bb-cbc8f7dd88eb" class="">You are designing a neural network to predict the type of fruit (Apple, Banana, or Orange) based on the following input features:<ul id="21a95b1a-aa71-80c3-a2fa-c09b76605081" class="bulleted-list"><li style="list-style-type:disc">Color intensity</li></ul><ul id="21a95b1a-aa71-804e-9028-f9164eb583cc" class="bulleted-list"><li style="list-style-type:disc">Weight</li></ul><ul id="21a95b1a-aa71-8080-9681-cf9ddcae50b9" class="bulleted-list"><li style="list-style-type:disc">Sugar level</li></ul><p id="21a95b1a-aa71-809b-a97b-d6a5cda8fbf6" class="">Define the input layer, hidden layer(s), and output layer, and mention the activation function used at each layer.</p></blockquote><hr id="21a95b1a-aa71-806a-b3d4-e8cac21075aa"/><h3 id="21a95b1a-aa71-80b2-8fb0-c76571dec60a" class="">✅ <strong>Step-by-Step Answer:</strong></h3><h3 id="21a95b1a-aa71-8068-953f-d7ee60479b42" class=""><strong>1. Input Layer</strong></h3><ul id="21a95b1a-aa71-804d-8d7c-d60cb71bc722" class="bulleted-list"><li style="list-style-type:disc"><strong>Features:</strong><ul id="21a95b1a-aa71-80b0-ab5b-cb97f543a73f" class="bulleted-list"><li style="list-style-type:circle">Color intensity</li></ul><ul id="21a95b1a-aa71-80fa-bf1f-dd1a52f385d7" class="bulleted-list"><li style="list-style-type:circle">Weight</li></ul><ul id="21a95b1a-aa71-80d6-a077-c95bf36f9aa9" class="bulleted-list"><li style="list-style-type:circle">Sugar level</li></ul></li></ul><ul id="21a95b1a-aa71-8063-98e1-c3b826249b6b" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 3 (1 for each input)</li></ul><hr id="21a95b1a-aa71-8001-a6c1-c72b70ef9b6e"/><h3 id="21a95b1a-aa71-80cf-bdb0-e1897375a53a" class=""><strong>2. Hidden Layer</strong></h3><ul id="21a95b1a-aa71-80ad-9465-d16e4671e684" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Hidden Layers:</strong> 1</li></ul><ul id="21a95b1a-aa71-80cb-b4e3-f98b06d74e58" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 6 (trial-based, can adjust during training)</li></ul><ul id="21a95b1a-aa71-804d-94a2-f5b473cca3fd" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>ReLU</strong><ul id="21a95b1a-aa71-801d-af7b-d96077812df7" class="bulleted-list"><li style="list-style-type:circle">Efficient for learning and avoids vanishing gradient</li></ul></li></ul><hr id="21a95b1a-aa71-8080-84c3-ec4e47e6624b"/><h3 id="21a95b1a-aa71-80a3-b396-dbe16127b348" class=""><strong>3. Output Layer</strong></h3><ul id="21a95b1a-aa71-80ff-9730-c529d790e0c4" class="bulleted-list"><li style="list-style-type:disc"><strong>Goal:</strong> Classify fruit into <strong>3 categories</strong>: Apple, Banana, or Orange</li></ul><ul id="21a95b1a-aa71-80af-b85d-c56479e1e505" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 3 (1 for each class)</li></ul><ul id="21a95b1a-aa71-8006-b644-c05173c4c4f1" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>Softmax</strong><ul id="21a95b1a-aa71-8051-a951-f22dbf77a623" class="bulleted-list"><li style="list-style-type:circle">Softmax turns the output into <strong>probabilities for each class</strong></li></ul><ul id="21a95b1a-aa71-8050-a4ba-eaf51c9c4713" class="bulleted-list"><li style="list-style-type:circle">The class with the <strong>highest probability</strong> is the prediction</li></ul></li></ul><hr id="21a95b1a-aa71-8036-919d-c40acb995455"/><h3 id="21a95b1a-aa71-807a-9711-c5b90b18b4ba" class="">✅ Final Network Summary:</h3><table id="21a95b1a-aa71-807a-a38e-ffcefe17f6a0" class="simple-table"><tbody><tr id="21a95b1a-aa71-806c-bada-d49fde2d60fe"><td id="JlqV" class="">Layer</td><td id="{FRN" class="">Neurons</td><td id="ugn@" class="">Activation Function</td><td id="}f{t" class="">Purpose</td></tr><tr id="21a95b1a-aa71-80bc-b03d-e1ee25c00f42"><td id="JlqV" class="">Input Layer</td><td id="{FRN" class="">3</td><td id="ugn@" class="">None</td><td id="}f{t" class="">Input features</td></tr><tr id="21a95b1a-aa71-80be-9e12-e00d059ca142"><td id="JlqV" class="">Hidden Layer</td><td id="{FRN" class="">6</td><td id="ugn@" class="">ReLU</td><td id="}f{t" class="">Learn internal patterns</td></tr><tr id="21a95b1a-aa71-80ff-8409-c4d0ca42652a"><td id="JlqV" class="">Output Layer</td><td id="{FRN" class="">3</td><td id="ugn@" class=""><strong>Softmax</strong></td><td id="}f{t" class="">Predict class (Apple/Banana/Orange)</td></tr></tbody></table><hr id="21a95b1a-aa71-806c-8114-f2acbe02f7ef"/><h3 id="21a95b1a-aa71-8068-97e5-d84cbf86f3e9" class="">🔁 Pattern for Multi-class Classification:</h3><table id="21a95b1a-aa71-8003-98ff-ed04f1967ad9" class="simple-table"><tbody><tr id="21a95b1a-aa71-8017-9a37-c9c3360030c2"><td id="w:&gt;&gt;" class="">Step</td><td id="}SF\" class="">What to Use</td></tr><tr id="21a95b1a-aa71-8024-a937-ffcf945967fd"><td id="w:&gt;&gt;" class="">Input Layer</td><td id="}SF\" class="">1 neuron per feature</td></tr><tr id="21a95b1a-aa71-80c6-9fbf-f4bb0c09f4ab"><td id="w:&gt;&gt;" class="">Hidden Layer</td><td id="}SF\" class="">ReLU activation</td></tr><tr id="21a95b1a-aa71-8061-96dc-f61e5f343ebb"><td id="w:&gt;&gt;" class=""><strong>Output Layer</strong></td><td id="}SF\" class="">1 neuron per class, <strong>Softmax</strong> activation</td></tr></tbody></table><hr id="21a95b1a-aa71-8016-8d40-dec91070dd59"/><p id="21a95b1a-aa71-800f-afe7-f863f400d279" class="">Great follow-up, Saqib! You’ve already seen these output activation functions:</p><ul id="21a95b1a-aa71-8018-bf82-e3ce66049352" class="bulleted-list"><li style="list-style-type:disc"><strong>Sigmoid</strong> → Binary classification</li></ul><ul id="21a95b1a-aa71-8091-bd50-f11c199aaedf" class="bulleted-list"><li style="list-style-type:disc"><strong>Softmax</strong> → Multi-class classification</li></ul><p id="21a95b1a-aa71-80f7-b09c-d3a6024cc296" class="">Now let’s do a new type of problem that uses <strong>another activation function at the output layer</strong>: <strong>None (Linear Activation)</strong> — used in <strong>regression problems</strong> (when output is a real number, not class).</p><hr id="21a95b1a-aa71-80e1-b2c3-f4d06eaba81e"/><h3 id="21a95b1a-aa71-803f-9ad1-c80da8919cbb" class="">🔸 <strong>Practice Question (Regression):</strong></h3><blockquote id="21a95b1a-aa71-8079-8f9b-d0547813b553" class="">You are building a neural network to predict the price of a house based on these features:<ul id="21a95b1a-aa71-80af-ace4-c93c09720cbb" class="bulleted-list"><li style="list-style-type:disc">Size of the house (in square feet)</li></ul><ul id="21a95b1a-aa71-80dc-adce-f2c44e72094b" class="bulleted-list"><li style="list-style-type:disc">Number of bedrooms</li></ul><ul id="21a95b1a-aa71-801e-a589-fd672126144d" class="bulleted-list"><li style="list-style-type:disc">Distance from city center</li></ul><p id="21a95b1a-aa71-807c-bfee-dc577dc81d15" class="">Define the input layer, hidden layer(s), and output layer. Mention the number of neurons and activation functions used at each layer.</p></blockquote><hr id="21a95b1a-aa71-806b-b3df-eb104ce30a02"/><h3 id="21a95b1a-aa71-8033-99c0-e89dd23a9aa1" class="">✅ <strong>Step-by-Step Answer:</strong></h3><h3 id="21a95b1a-aa71-8063-9d5d-e88fda160376" class=""><strong>1. Input Layer</strong></h3><ul id="21a95b1a-aa71-8080-b578-cb95eae0c44e" class="bulleted-list"><li style="list-style-type:disc"><strong>Features:</strong><ul id="21a95b1a-aa71-806f-85ba-ce55ff1d73db" class="bulleted-list"><li style="list-style-type:circle">Size</li></ul><ul id="21a95b1a-aa71-8051-b341-e089e0f475a7" class="bulleted-list"><li style="list-style-type:circle">Bedrooms</li></ul><ul id="21a95b1a-aa71-804f-9ea7-f7ca78abeeca" class="bulleted-list"><li style="list-style-type:circle">Distance from city center</li></ul></li></ul><ul id="21a95b1a-aa71-8025-9956-c2c11f351f02" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 3</li></ul><hr id="21a95b1a-aa71-8047-8033-c9a9e8c5a41e"/><h3 id="21a95b1a-aa71-8046-ac89-e819b5e58c7d" class=""><strong>2. Hidden Layer</strong></h3><ul id="21a95b1a-aa71-80a0-8420-d69f39b38c67" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Hidden Layers:</strong> 1</li></ul><ul id="21a95b1a-aa71-80d5-a58e-e368e61ea703" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 5 (can vary based on complexity)</li></ul><ul id="21a95b1a-aa71-8065-af3d-d8481ee80f62" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>ReLU</strong><ul id="21a95b1a-aa71-80d1-93ef-c1cf0faabc0a" class="bulleted-list"><li style="list-style-type:circle">For learning nonlinear relationships quickly</li></ul></li></ul><hr id="21a95b1a-aa71-8041-9ce6-f4d4ef9de715"/><h3 id="21a95b1a-aa71-8048-94f5-cc7be72baa83" class=""><strong>3. Output Layer</strong></h3><ul id="21a95b1a-aa71-80d6-9ed2-f5e859811bb3" class="bulleted-list"><li style="list-style-type:disc"><strong>Goal:</strong> Predict a <strong>numeric value</strong> (price of the house)</li></ul><ul id="21a95b1a-aa71-80f0-911b-e0af7f7d300a" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 1</li></ul><ul id="21a95b1a-aa71-80fc-a09d-f9321a3e0ec9" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>None (Linear Activation)</strong><ul id="21a95b1a-aa71-8047-bd32-c9dd6f45691a" class="bulleted-list"><li style="list-style-type:circle">Why?<ul id="21a95b1a-aa71-80c9-9751-d9eda7fc79db" class="bulleted-list"><li style="list-style-type:square">We don’t want to restrict the output (like between 0–1 or 0–100)</li></ul><ul id="21a95b1a-aa71-8010-9478-c90bfd861101" class="bulleted-list"><li style="list-style-type:square">Linear allows any real number output</li></ul></li></ul></li></ul><hr id="21a95b1a-aa71-80b1-9063-fccd353af266"/><h3 id="21a95b1a-aa71-803f-8e02-eb14b17954f9" class="">✅ Final Network Summary:</h3><table id="21a95b1a-aa71-804d-b3b4-ced8da9a9aee" class="simple-table"><tbody><tr id="21a95b1a-aa71-80d9-975d-f0aeac02ee71"><td id="AAu]" class="">Layer</td><td id="&lt;:gE" class="">Neurons</td><td id="ohqj" class="">Activation Function</td><td id="c{eM" class="">Purpose</td></tr><tr id="21a95b1a-aa71-8040-b9cc-d62f9ffa03cf"><td id="AAu]" class="">Input Layer</td><td id="&lt;:gE" class="">3</td><td id="ohqj" class="">None</td><td id="c{eM" class="">Input features</td></tr><tr id="21a95b1a-aa71-8050-8a8b-cb484ff47269"><td id="AAu]" class="">Hidden Layer</td><td id="&lt;:gE" class="">5</td><td id="ohqj" class="">ReLU</td><td id="c{eM" class="">Extract meaningful patterns</td></tr><tr id="21a95b1a-aa71-808a-b064-e3793c5c7e94"><td id="AAu]" class="">Output Layer</td><td id="&lt;:gE" class="">1</td><td id="ohqj" class=""><strong>Linear (None)</strong></td><td id="c{eM" class="">Predict continuous value (price)</td></tr></tbody></table><hr id="21a95b1a-aa71-80f2-ae8f-c3deaff096ca"/><h3 id="21a95b1a-aa71-807f-b113-fd317f92a87d" class="">🔁 Pattern for Regression Tasks:</h3><table id="21a95b1a-aa71-8054-8315-cc085f9de04d" class="simple-table"><tbody><tr id="21a95b1a-aa71-80d2-926f-dc931373f4c4"><td id="ulw[" class="">Step</td><td id="n^}P" class="">What to Use</td></tr><tr id="21a95b1a-aa71-804a-94c9-c3b555f868b7"><td id="ulw[" class="">Input Layer</td><td id="n^}P" class="">Based on number of features</td></tr><tr id="21a95b1a-aa71-8087-90ae-d5632114d89e"><td id="ulw[" class="">Hidden Layer</td><td id="n^}P" class="">ReLU</td></tr><tr id="21a95b1a-aa71-80a5-b006-dcad2dca8593"><td id="ulw[" class=""><strong>Output Layer</strong></td><td id="n^}P" class="">1 neuron, <strong>no activation</strong></td></tr></tbody></table><hr id="21a95b1a-aa71-80f1-bcc3-d95d098ce86e"/><hr id="21a95b1a-aa71-80d1-8b28-c230265fcbce"/><h3 id="21a95b1a-aa71-8080-b4d2-c80317f0f882" class="">🔸 <strong>Practice Question (Binary Classification):</strong></h3><blockquote id="21a95b1a-aa71-806c-8a73-f61b139958b6" class="">You are building a neural network to predict whether a patient is diabetic or not based on the following medical records:<ul id="21a95b1a-aa71-800b-bc20-db6193f5aaea" class="bulleted-list"><li style="list-style-type:disc">Glucose level</li></ul><ul id="21a95b1a-aa71-80e8-b235-f2c9c7665137" class="bulleted-list"><li style="list-style-type:disc">BMI (Body Mass Index)</li></ul><ul id="21a95b1a-aa71-8029-b99f-e35e62510b19" class="bulleted-list"><li style="list-style-type:disc">Age</li></ul><ul id="21a95b1a-aa71-8099-adbd-dfbeb9f4e083" class="bulleted-list"><li style="list-style-type:disc">Blood Pressure</li></ul></blockquote><blockquote id="21a95b1a-aa71-80cb-8441-c247c74e2eef" class="">Define the input layer, hidden layer(s), and output layer. Mention the number of neurons and the activation function used at each layer.</blockquote><hr id="21a95b1a-aa71-80be-a5f3-d1af1d86a1ab"/><h3 id="21a95b1a-aa71-80ca-bb31-d9f4969d4d73" class="">✅ <strong>Step-by-Step Answer:</strong></h3><h3 id="21a95b1a-aa71-803e-8608-cfc67b80867c" class=""><strong>1. Input Layer</strong></h3><ul id="21a95b1a-aa71-8046-b500-c4ccff850f0c" class="bulleted-list"><li style="list-style-type:disc"><strong>Features:</strong><ul id="21a95b1a-aa71-8037-bdf1-e54ba9a3d090" class="bulleted-list"><li style="list-style-type:circle">Glucose level</li></ul><ul id="21a95b1a-aa71-8069-9a0e-f478eb2c0c63" class="bulleted-list"><li style="list-style-type:circle">BMI</li></ul><ul id="21a95b1a-aa71-80b8-a0ab-c354e5eda7e6" class="bulleted-list"><li style="list-style-type:circle">Age</li></ul><ul id="21a95b1a-aa71-8081-99e3-c196dc6c394e" class="bulleted-list"><li style="list-style-type:circle">Blood Pressure</li></ul></li></ul><ul id="21a95b1a-aa71-8059-9797-e15ff455629a" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 4 (1 neuron per feature)</li></ul><hr id="21a95b1a-aa71-802c-ae66-edb0d5d44185"/><h3 id="21a95b1a-aa71-8026-9922-e7250b83d6a8" class=""><strong>2. Hidden Layer</strong></h3><ul id="21a95b1a-aa71-808d-91f5-d08621468814" class="bulleted-list"><li style="list-style-type:disc"><strong>Number of Hidden Layers:</strong> 1</li></ul><ul id="21a95b1a-aa71-8090-aba0-f6b1385b1e55" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 6 (moderate complexity due to health data)</li></ul><ul id="21a95b1a-aa71-80b7-a99a-d967f567c20b" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>ReLU</strong><ul id="21a95b1a-aa71-8090-8f2c-d70b52f81f6d" class="bulleted-list"><li style="list-style-type:circle">Best for learning non-linear relationships</li></ul><ul id="21a95b1a-aa71-80c6-8f68-c1eb29d4a2c2" class="bulleted-list"><li style="list-style-type:circle">Efficient and avoids vanishing gradient</li></ul></li></ul><hr id="21a95b1a-aa71-80ca-9fb3-cd32e61833eb"/><h3 id="21a95b1a-aa71-80b3-84b7-cbc0681c377e" class=""><strong>3. Output Layer</strong></h3><ul id="21a95b1a-aa71-8023-a2b9-c3ca8f06524d" class="bulleted-list"><li style="list-style-type:disc"><strong>Goal:</strong> Predict if patient is diabetic (Yes/No)</li></ul><ul id="21a95b1a-aa71-80ce-ad49-f3ee6347030e" class="bulleted-list"><li style="list-style-type:disc"><strong>Neurons:</strong> 1</li></ul><ul id="21a95b1a-aa71-807f-b5db-e3a682b93a03" class="bulleted-list"><li style="list-style-type:disc"><strong>Activation Function:</strong> <strong>Sigmoid</strong><ul id="21a95b1a-aa71-8084-8187-ff4d259242ed" class="bulleted-list"><li style="list-style-type:circle">For binary classification</li></ul><ul id="21a95b1a-aa71-8092-8dd7-e8f83502a70e" class="bulleted-list"><li style="list-style-type:circle">Gives output between 0 and 1 (0 = not diabetic, 1 = diabetic)</li></ul></li></ul><hr id="21a95b1a-aa71-80d6-bd47-c7d0cc71a17e"/><h3 id="21a95b1a-aa71-80bc-a76d-fb1b61c57a4b" class="">✅ Final Network Summary:</h3><table id="21a95b1a-aa71-805d-827a-e549b840e5fa" class="simple-table"><tbody><tr id="21a95b1a-aa71-80ed-a408-fb5e686665fc"><td id="E{`G" class="">Layer</td><td id="aQUF" class="">Neurons</td><td id="EOG[" class="">Activation Function</td><td id="Xnv}" class="">Purpose</td></tr><tr id="21a95b1a-aa71-80af-b2a8-d6a56d75f6f2"><td id="E{`G" class="">Input Layer</td><td id="aQUF" class="">4</td><td id="EOG[" class="">None</td><td id="Xnv}" class="">Feed patient health data</td></tr><tr id="21a95b1a-aa71-80f1-a685-e923cd131d50"><td id="E{`G" class="">Hidden Layer</td><td id="aQUF" class="">6</td><td id="EOG[" class="">ReLU</td><td id="Xnv}" class="">Learn complex health patterns</td></tr><tr id="21a95b1a-aa71-8007-9e98-e258c749b503"><td id="E{`G" class="">Output Layer</td><td id="aQUF" class="">1</td><td id="EOG[" class="">Sigmoid</td><td id="Xnv}" class="">Predict diabetes (probability 0–1)</td></tr></tbody></table><hr id="21a95b1a-aa71-807e-9a31-dd2bb69ebba7"/><h3 id="21a95b1a-aa71-80ad-aa14-ce5d91ad8b18" class="">💡 You’ve Now Seen 4 Output Activation Scenarios:</h3><table id="21a95b1a-aa71-80a6-ab28-cf849e917aef" class="simple-table"><tbody><tr id="21a95b1a-aa71-8066-a7be-ea07d9145460"><td id="tTdq" class="">Task Type</td><td id="[k_:" class="">Output Activation</td><td id="kzOW" class="">When to Use</td></tr><tr id="21a95b1a-aa71-8006-96eb-c0d91f9d70c1"><td id="tTdq" class="">Binary Classification</td><td id="[k_:" class="">Sigmoid</td><td id="kzOW" class="">Yes/No, Pass/Fail, Diabetic/Not</td></tr><tr id="21a95b1a-aa71-8038-aea9-fe6a9749b6c8"><td id="tTdq" class="">Multi-class Classification</td><td id="[k_:" class="">Softmax</td><td id="kzOW" class="">Apple/Banana/Orange, Red/Blue/Green</td></tr><tr id="21a95b1a-aa71-806c-bd31-e3a48d8e0df2"><td id="tTdq" class="">Regression</td><td id="[k_:" class="">None (Linear)</td><td id="kzOW" class="">Predict age, salary, price</td></tr><tr id="21a95b1a-aa71-80a5-a176-e65adec39ff0"><td id="tTdq" class="">Multi-label Classification (Extra)</td><td id="[k_:" class="">Sigmoid (multi-output)</td><td id="kzOW" class="">Predict multiple independent labels (e.g., symptoms present: fever, cough, etc.)</td></tr></tbody></table><hr id="21a95b1a-aa71-80d2-9aca-e080f71daf03"/><p id="21a95b1a-aa71-808e-95f5-fb7791fdd308" class="">Let me know if you want an example of <strong>multi-label classification</strong>, or want me to quiz you with a challenge question next!</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
